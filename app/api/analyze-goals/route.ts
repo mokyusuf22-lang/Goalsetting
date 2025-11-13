@@ -46,8 +46,8 @@ Example output:
     const chatCompletion = await openai.chat.completions.create({
       model: 'gpt-4o-mini', // You can use 'gpt-4' or other models if available
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 300, // Adjust as needed for the desired output length
-      temperature: 0.7, // Controls randomness: lower for more focused, higher for more creative
+      max_tokens: 500, // Adjust as needed for the desired output length
+      temperature: 0.3, // Controls randomness: lower for more focused, higher for more creative
     });
 
     const analysis = chatCompletion.choices[0].message.content;
