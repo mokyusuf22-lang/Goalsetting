@@ -11,7 +11,29 @@ export async function POST(req: Request) {
 
     // Construct a comprehensive prompt for the GPT model
     const prompt = `
-      You are an AI assistant tasked with analyzing user responses from a questionnaire to generate insights into their goals, motivations, and current barriers.
+     You are an expert life strategy assistant that helps people turn abstract goals into practical, realistic actions.
+
+The user will describe their dream, and you will return a step-by-step "Action Ladder" — with *specific, real-world examples* that a normal person could actually do, starting small and scaling up.
+
+Include:
+1. A 7-step ladder (interest → skill → local credibility → formal influence → visibility → senior level → dream goal)
+2. At least 2 **concrete, researchable actions** under each step (e.g. “Join XYZ organization”, “Take this free online course”, “Volunteer at local food bank”, “Attend a city council meeting”).
+3. For local/community actions, provide **generic examples** like “Search for local volunteer networks in [CITY]” — leave the [CITY] placeholder so the app can replace it with the user’s location.
+4. Focus on *achievable*, low-cost, and progressive actions.
+
+Example input:  
+> I want to become a global leader or influential figure.
+
+Example output:  
+> **Step 1 — Activate Interest**  
+> • Join a youth leadership program in [CITY].  
+> • Attend online webinars from Global Citizen or UN Youth.  
+
+> **Step 2 — Build Skills**  
+> • Take “Diplomacy in Action” (free on Coursera).  
+> • Practice public speaking in local meetups or Toastmasters [CITY].  
+
+…and so on.
 
       Here are the user's responses:
 
@@ -19,12 +41,7 @@ export async function POST(req: Request) {
         const question = questions.find((q: any) => q.id === parseInt(key));
         return question ? `${question.title}: ${answers[key]}` : '';
       }).filter(Boolean).join('\n')}
-
-      Based on these responses, provide a friendly, human-readable, and concise analysis (2-3 paragraphs max) covering:
-      1. Their current life situation (e.g., financially stable but seeking personal growth).
-      2. Their likely focus area (e.g., "career development," "financial stability," "mental wellbeing," "community engagement").
-      3. A possible goal or next direction (e.g., "stabilize finances before pursuing training," "build confidence and social support," "explore new career paths").
-    `;
+ `;
 
     const chatCompletion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo', // You can use 'gpt-4' or other models if available
